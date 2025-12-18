@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Assets.Scripts.Commands
+namespace Assets.Scripts.Commands.Concrete_Commands
 {
     public class ThirdEyeCommand : MonoBehaviour
     {
