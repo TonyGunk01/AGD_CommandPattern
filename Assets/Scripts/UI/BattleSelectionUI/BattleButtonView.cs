@@ -21,5 +21,6 @@ namespace Command.UI
             this.battleId = battleId;
             buttonText.SetText("Battle " + battleId);
         }
+
     }
 }
