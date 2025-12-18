@@ -21,7 +21,6 @@ namespace Command.UI
                 case ActionContainerAlignment.Left:
                     actionButtonContainer.localPosition = leftAlignedPosition;
                     break;
-
                 case ActionContainerAlignment.Right:
                     actionButtonContainer.localPosition = rightAlignedPosition;
                     break;

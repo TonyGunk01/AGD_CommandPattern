@@ -1,4 +1,4 @@
-using Command.Actions;
+using Command.Commands;
 using Command.Main;
 using System.Collections.Generic;
 
@@ -53,9 +53,10 @@ namespace Command.UI
             }
         }
 
-        public void OnActionSelected(CommandType commandType)
+        // To Learn more about Events and Observer Pattern, check out the course list here: https://outscal.com/courses
+        public void OnActionSelected(CommandType actionType)
         {
-            GameService.Instance.EventService.OnActionSelected.InvokeEvent(commandType);
+            GameService.Instance.EventService.OnActionSelected.InvokeEvent(actionType);
             Hide();
         }
 
@@ -66,14 +67,13 @@ namespace Command.UI
                 case 1:
                     actionSelectionView.SetActionContainerAlignment(ActionContainerAlignment.Left);
                     break;
-
                 case 2:
                     actionSelectionView.SetActionContainerAlignment(ActionContainerAlignment.Right);
                     break;
-
                 default:
                     break;
             }
         }
+
     }
 }

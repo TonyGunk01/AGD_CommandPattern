@@ -16,13 +16,14 @@ namespace Command.Input
             this.targetTypeToSelect = targetTypeToSelect;
 
             if (UnityEngine.Input.GetMouseButtonDown(0))
+            {
                 TrySelectingTargetUnit();
+            }
         }
 
         public void TrySelectingTargetUnit()
         {
             Vector3 mouseWorldPosition = GetMouseWorldPosition();
-
             if(IsTargetSelected(mouseWorldPosition, out UnitView selectedUnit))
                 inputService.OnTargetSelected(selectedUnit.Controller);
         }
@@ -30,7 +31,6 @@ namespace Command.Input
         private Vector3 GetMouseWorldPosition()
         {
             var mousePosition = Camera.main.ScreenToWorldPoint(UnityEngine.Input.mousePosition);
-
             return new Vector3(mousePosition.x, mousePosition.y, 0);
         }
 
@@ -41,13 +41,11 @@ namespace Command.Input
             if(IsUnit(collider))
             {
                 selectedUnit = collider.GetComponent<UnitView>();
-
                 if(ValidateUnit(selectedUnit))
                     return true;
             }
 
             selectedUnit = null;
-
             return false;
         }
 
@@ -59,13 +57,10 @@ namespace Command.Input
             {
                 case TargetType.Friendly:
                     return selectedUnit.Controller.Owner.PlayerID == GameService.Instance.PlayerService.ActivePlayerID && selectedUnit.Controller.IsAlive();
-                
                 case TargetType.Enemy:
                     return selectedUnit.Controller.Owner.PlayerID != GameService.Instance.PlayerService.ActivePlayerID && selectedUnit.Controller.IsAlive();
-                
                 case TargetType.Self:
                     return selectedUnit.Controller.UnitID == GameService.Instance.PlayerService.ActiveUnitID && selectedUnit.Controller.IsAlive();
-                
                 default:
                     throw new System.Exception($"Target Type to be selected might be null. Cannot Validate Selected Unit. Current Target Type to be selected is: {targetTypeToSelect}");
             }

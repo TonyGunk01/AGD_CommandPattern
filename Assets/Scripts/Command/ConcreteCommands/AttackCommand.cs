@@ -1,8 +1,7 @@
-﻿using Command.Main;
-using System.Collections;
-using UnityEngine;
+using Command.Main;
+using Command.Actions;
 
-namespace Assets.Scripts.Commands.Concrete_Commands
+namespace Command.Commands
 {
     public class AttackCommand : UnitCommand
     {
@@ -16,6 +15,6 @@ namespace Assets.Scripts.Commands.Concrete_Commands
 
         public override bool WillHitTarget() => true;
 
-        public override void Execute() => GameService.Instance.ActionService.GetActionByType(CommandType.Attack).PerformAction(actorUnit, targetUnit, willHitTarget);
+        public override void Execute() => GameService.Instance.ActionService.GetActionByType((Actions.CommandType)CommandType.Attack).PerformAction(actorUnit, targetUnit, willHitTarget);
     }
 }

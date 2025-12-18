@@ -1,4 +1,5 @@
 using Command.Input;
+using Command.Commands;
 using System.Collections.Generic;
 
 namespace Command.Actions
@@ -25,11 +26,10 @@ namespace Command.Actions
         {
             if (actions.ContainsKey(type))
                 return actions[type];
-
             else
                 throw new System.Exception($"No Action found for the type {type} in the dictionary");
         }
 
-        public TargetType GetTargetTypeForAction(CommandType commandType) => actions[commandType].TargetType;
+        public TargetType GetTargetTypeForAction(CommandType actionType) => actions[actionType].TargetType;
     }
 }

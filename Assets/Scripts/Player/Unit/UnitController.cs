@@ -1,6 +1,6 @@
 using UnityEngine;
 using Command.Main;
-using Command.Actions;
+using Command.Commands;
 using System.Collections;
 using System;
 using Object = UnityEngine.Object;
@@ -9,34 +9,14 @@ namespace Command.Player
 {
     public class UnitController
     {
-        public PlayerController Owner 
-        { 
-            get; 
-            private set; 
-        }
-
+        public PlayerController Owner { get; private set; }
         private UnitScriptableObject unitScriptableObject;
         private UnitView unitView;
 
-        public int UnitID 
-        { 
-            get; 
-            private set; 
-        }
-
+        public int UnitID { get; private set; }
         public UnitType UnitType => unitScriptableObject.UnitType;
-
-        public int CurrentHealth 
-        { 
-            get; 
-            private set; 
-        }
-
-        public UnitUsedState UsedState 
-        { 
-            get; 
-            private set; 
-        }
+        public int CurrentHealth { get; private set; }
+        public UnitUsedState UsedState { get; private set; }
         
         private UnitAliveState aliveState;
         private Vector3 originalPosition;
@@ -93,7 +73,6 @@ namespace Command.Player
                 CurrentHealth = 0;
                 UnitDied();
             }
-
             else
                 unitView.PlayAnimation(UnitAnimations.HIT);
 
@@ -124,7 +103,7 @@ namespace Command.Player
             unitView.StartCoroutine(MoveToPositionOverTime(battlePosition, moveTime, callback, shouldPlayActionAnimation, commandTypeToExecute));
         }
 
-        private IEnumerator MoveToPositionOverTime(Vector3 targetPosition, float time, Action callback, bool shouldPlayActionAnimation, CommandType commandTypeToExecute)
+        private IEnumerator MoveToPositionOverTime(Vector3 targetPosition, float time, Action callback, bool shouldPlayActionAnimation, CommandType actionTypeToExecute)
         {
             float elapsedTime = 0;
             Vector3 startingPosition = unitView.transform.position;
@@ -139,25 +118,23 @@ namespace Command.Player
             unitView.transform.position = targetPosition;
 
             if (shouldPlayActionAnimation)
-                PlayActionAnimation(commandTypeToExecute);
+                PlayActionAnimation(actionTypeToExecute);
 
             if (callback != null)
                 callback.Invoke();
         }
 
-        private void PlayActionAnimation(CommandType commandType)
+        private void PlayActionAnimation(CommandType actionType)
         {
-            if (commandType == CommandType.None)
+            if (actionType == CommandType.None)
                 return;
             
-            if (commandType == unitScriptableObject.executableCommands[0])
+            if (actionType == unitScriptableObject.executableCommands[0])
                 unitView.PlayAnimation(UnitAnimations.ACTION1);
-
-            else if (commandType == unitScriptableObject.executableCommands[1])
+            else if (actionType == unitScriptableObject.executableCommands[1])
                 unitView.PlayAnimation(UnitAnimations.ACTION2);
-
             else
-                throw new System.Exception($"No Animation found for the action type : {commandType}");
+                throw new System.Exception($"No Animation found for the action type : {actionType}");
         }
 
         public void OnActionExecuted()
@@ -176,16 +153,15 @@ namespace Command.Player
 
         public void ResetUnitIndicator() => unitView.SetUnitIndicator(false);
 
+        public void ProcessUnitCommand(UnitCommand commandToProcess) => GameService.Instance.CommandInvoker.ProcessCommand(commandToProcess);
+
         public Vector3 GetEnemyPosition() 
         {
             if (Owner.PlayerID == 1)
                 return unitView.transform.position + unitScriptableObject.EnemyBattlePositionOffset;
-
             else
                 return unitView.transform.position - unitScriptableObject.EnemyBattlePositionOffset;
         }
-
-        public void ProcessUnitCommand(UnitCommand commandToProcess) => GameService.Instance.ProcessUnitCommand(commandToProcess);
     }
 
     public enum UnitUsedState

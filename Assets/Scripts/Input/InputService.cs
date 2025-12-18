@@ -1,7 +1,7 @@
-using Assets.Scripts.Commands;
-using Command.Actions;
 using Command.Main;
 using Command.Player;
+using Command.Commands;
+using Command.Actions;
 
 namespace Command.Input
 {
@@ -10,7 +10,7 @@ namespace Command.Input
         private MouseInputHandler mouseInputHandler;
 
         private InputState currentState;
-        private CommandType selectedCommandType;
+        private Commands.CommandType selectedCommandType;
         private TargetType targetType;
 
         public InputService()
@@ -30,11 +30,11 @@ namespace Command.Input
                 mouseInputHandler.HandleTargetSelection(targetType);
         }
 
-        public void OnActionSelected(CommandType selectedCommandType)
+        public void OnActionSelected(Commands.CommandType selectedActionType)
         {
-            this.selectedCommandType = selectedCommandType;
+            this.selectedCommandType = selectedActionType;
             SetInputState(InputState.SELECTING_TARGET);
-            TargetType targetType = SetTargetType(selectedCommandType);
+            TargetType targetType = SetTargetType((Actions.CommandType)selectedActionType);
             ShowTargetSelectionUI(targetType);
         }
 
@@ -44,7 +44,7 @@ namespace Command.Input
             GameService.Instance.UIService.ShowTargetOverlay(playerID, selectedTargetType);
         }
 
-        private TargetType SetTargetType(CommandType selectedCommandType) => targetType = GameService.Instance.ActionService.GetTargetTypeForAction(selectedCommandType);
+        private TargetType SetTargetType(Actions.CommandType selectedCommandType) => targetType = GameService.Instance.ActionService.GetTargetTypeForAction(selectedCommandType);
 
         public void OnTargetSelected(UnitController targetUnit)
         {
@@ -53,41 +53,38 @@ namespace Command.Input
             GameService.Instance.ProcessUnitCommand(commandToProcess);
         }
 
-        private CommandData CreateCommandData(UnitController targetUnit)
-        {
-            return new CommandData(GameService.Instance.PlayerService.ActiveUnitID, targetUnit.UnitID, GameService.Instance.PlayerService.ActivePlayerID, targetUnit.Owner.PlayerID);
-        }
-
         private UnitCommand CreateUnitCommand(UnitController targetUnit)
         {
+
             CommandData commandData = CreateCommandData(targetUnit);
 
             switch (selectedCommandType)
             {
-                case CommandType.Attack:
+                case Commands.CommandType.Attack:
                     return new AttackCommand(commandData);
-
-                case CommandType.Heal:
+                case Commands.CommandType.Heal:
                     return new HealCommand(commandData);
-
-                case CommandType.AttackStance:
+                case Commands.CommandType.AttackStance:
                     return new AttackStanceCommand(commandData);
-
-                case CommandType.Cleanse:
+                case Commands.CommandType.Cleanse:
                     return new CleanseCommand(commandData);
-
-                case CommandType.BerserkAttack:
+                case Commands.CommandType.BerserkAttack:
                     return new BerserkAttackCommand(commandData);
-
-                case CommandType.Meditate:
+                case Commands.CommandType.Meditate:
                     return new MeditateCommand(commandData);
-
-                case CommandType.ThirdEye:
+                case Commands.CommandType.ThirdEye:
                     return new ThirdEyeCommand(commandData);
-
                 default:
                     throw new System.Exception($"No Command found of type: {selectedCommandType}");
             }
+        }
+
+        private CommandData CreateCommandData(UnitController targetUnit)
+        {
+            return new CommandData(GameService.Instance.PlayerService.ActiveUnitID,
+                                   targetUnit.UnitID,
+                                   GameService.Instance.PlayerService.ActivePlayerID,
+                                   targetUnit.Owner.PlayerID);
         }
     }
 }
