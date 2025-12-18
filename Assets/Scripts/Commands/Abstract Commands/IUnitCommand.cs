@@ -1,18 +1,19 @@
+using Command.Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IUnitCommand : MonoBehaviour
+public abstract class UnitCommand : ICommand
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int ActorUnitID;
+    public int TargetUnitID;
+    public int ActorPlayerID;
+    public int TargetPlayerID;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    protected UnitController actorUnit;
+    protected UnitController targetUnit;
+
+    public abstract override void Execute();
+
+    public abstract bool WillHitTarget();
 }
