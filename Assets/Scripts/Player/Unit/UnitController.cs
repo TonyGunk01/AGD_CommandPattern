@@ -9,14 +9,34 @@ namespace Command.Player
 {
     public class UnitController
     {
-        public PlayerController Owner { get; private set; }
+        public PlayerController Owner 
+        { 
+            get; 
+            private set; 
+        }
+
         private UnitScriptableObject unitScriptableObject;
         private UnitView unitView;
 
-        public int UnitID { get; private set; }
+        public int UnitID 
+        { 
+            get; 
+            private set; 
+        }
+
         public UnitType UnitType => unitScriptableObject.UnitType;
-        public int CurrentHealth { get; private set; }
-        public UnitUsedState UsedState { get; private set; }
+
+        public int CurrentHealth 
+        { 
+            get; 
+            private set; 
+        }
+
+        public UnitUsedState UsedState 
+        { 
+            get; 
+            private set; 
+        }
         
         private UnitAliveState aliveState;
         private Vector3 originalPosition;
@@ -73,6 +93,7 @@ namespace Command.Player
                 CurrentHealth = 0;
                 UnitDied();
             }
+
             else
                 unitView.PlayAnimation(UnitAnimations.HIT);
 
@@ -131,8 +152,10 @@ namespace Command.Player
             
             if (actionType == unitScriptableObject.executableCommands[0])
                 unitView.PlayAnimation(UnitAnimations.ACTION1);
+
             else if (actionType == unitScriptableObject.executableCommands[1])
                 unitView.PlayAnimation(UnitAnimations.ACTION2);
+
             else
                 throw new System.Exception($"No Animation found for the action type : {actionType}");
         }
@@ -157,6 +180,7 @@ namespace Command.Player
         {
             if (Owner.PlayerID == 1)
                 return unitView.transform.position + unitScriptableObject.EnemyBattlePositionOffset;
+
             else
                 return unitView.transform.position - unitScriptableObject.EnemyBattlePositionOffset;
         }

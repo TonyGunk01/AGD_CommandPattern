@@ -25,6 +25,7 @@ namespace Command.Actions
         {
             if (actions.ContainsKey(type))
                 return actions[type];
+
             else
                 throw new System.Exception($"No Action found for the type {type} in the dictionary");
         }

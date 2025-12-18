@@ -26,6 +26,7 @@ namespace Command.Actions
 
             if (IsSuccessful())
                 targetUnit.TakeDamage(actorUnit.CurrentPower * 2);
+
             else
             {
                 actorUnit.TakeDamage(actorUnit.CurrentPower * 2);

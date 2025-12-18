@@ -27,6 +27,7 @@ namespace Command.Actions
                 targetUnit.TakeDamage(healthToConvert);
                 targetUnit.CurrentPower += healthToConvert;
             }
+
             else
                 GameService.Instance.UIService.ActionMissed();
         }

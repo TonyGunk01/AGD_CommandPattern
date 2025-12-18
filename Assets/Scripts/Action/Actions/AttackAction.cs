@@ -25,6 +25,7 @@ namespace Command.Actions
 
             if (IsSuccessful())
                 targetUnit.TakeDamage(actorUnit.CurrentPower);
+
             else
                 GameService.Instance.UIService.ActionMissed();
         }
@@ -40,15 +41,19 @@ namespace Command.Actions
                 case UnitType.WIZARD:
                     GameService.Instance.SoundService.PlaySoundEffects(Sound.SoundType.MAGIC_BALL);
                     break;
+
                 case UnitType.SWORD_MASTER:
                     GameService.Instance.SoundService.PlaySoundEffects(Sound.SoundType.KNIFE_SLASH);
                     break;
+
                 case UnitType.MAGE:
                     GameService.Instance.SoundService.PlaySoundEffects(Sound.SoundType.FIRE_ATTACK);
                     break;
+
                 case UnitType.BERSERKER:
                     GameService.Instance.SoundService.PlaySoundEffects(Sound.SoundType.SWORD_SLASH);
                     break;
+
                 default:
                     break;
             }
