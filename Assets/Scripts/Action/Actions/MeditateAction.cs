@@ -29,6 +29,7 @@ namespace Command.Actions
                 targetUnit.CurrentMaxHealth += healthToIncrease;
                 targetUnit.RestoreHealth(healthToIncrease);
             }
+
             else
                 GameService.Instance.UIService.ActionMissed();
         }

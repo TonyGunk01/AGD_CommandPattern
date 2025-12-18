@@ -26,6 +26,7 @@ namespace Command.Actions
 
             if (IsSuccessful())
                 targetUnit.ResetStats();
+
             else
                 GameService.Instance.UIService.ActionMissed();
         }

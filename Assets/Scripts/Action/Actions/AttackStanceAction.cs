@@ -9,7 +9,10 @@ namespace Command.Actions
     {
         private UnitController actorUnit;
         private UnitController targetUnit;
-        TargetType IAction.TargetType { get => TargetType.Self; }
+        TargetType IAction.TargetType 
+        { 
+            get => TargetType.Self; 
+        }
 
         public void PerformAction(UnitController actorUnit, UnitController targetUnit)
         {
@@ -25,6 +28,7 @@ namespace Command.Actions
 
             if (IsSuccessful())
                 targetUnit.CurrentPower += (int)(targetUnit.CurrentPower * 0.2f);
+
             else
                 GameService.Instance.UIService.ActionMissed();
         }

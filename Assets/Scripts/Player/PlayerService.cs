@@ -59,6 +59,7 @@ namespace Command.Player
         {
             if (activePlayer == null)
                 activePlayer = player1;
+
             else 
                 activePlayer = activePlayer == player1 ? player2 : player1;
         }
@@ -73,6 +74,7 @@ namespace Command.Player
 
             if (deadPlayer == player1)
                 winnerId = player2.PlayerID;
+
             else
                 winnerId = player1.PlayerID;
 
@@ -83,8 +85,10 @@ namespace Command.Player
         {
             if (player1.PlayerID == playerId)
                 return player1;
+
             else if (player2.PlayerID == playerId)
                 return player2;
+
             else
                 throw new System.Exception($"No Player found for the given Player ID: {playerId}");
         }
@@ -93,6 +97,7 @@ namespace Command.Player
         {
             if (player1.AllUnitsDead())
                 PlayerDied(player1);
+
             else if (player2.AllUnitsDead())
                 PlayerDied(player2);
         }

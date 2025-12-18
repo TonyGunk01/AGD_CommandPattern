@@ -7,9 +7,15 @@ namespace Command.Player
     {
         private PlayerService playerService;
 
-        public int PlayerID { get; private set; }
+        public int PlayerID 
+        { 
+            get; 
+            private set; 
+        }
+
         private List<UnitController> units;
         private int activeUnitIndex;
+
         public int ActiveUnitID => units[activeUnitIndex].UnitID;
 
         public PlayerController(PlayerService playerService, PlayerScriptableObject playerScriptableObject)
@@ -24,9 +30,7 @@ namespace Command.Player
             units = new List<UnitController>();
 
             for(int i=0; i<unitScriptableObjects.Count; i++)
-            {
                 units.Add(new UnitController(this, unitScriptableObjects[i], unitPositions[i]));
-            }
         }
 
         public void StartPlayerTurn()
@@ -40,6 +44,7 @@ namespace Command.Player
         {
             if (IsCurrentUnitAlive())
                 units[activeUnitIndex].StartUnitTurn();
+
             else
                 OnUnitTurnEnded();
         }
@@ -48,17 +53,16 @@ namespace Command.Player
         {
             if(AllUnitsUsed())
             {
-                // TODO:    Need to check here if any of the players are dead. Not only the active one.
-
                 if (AllUnitsDead())
                     playerService.PlayerDied(this);
+
                 else 
                     EndPlayerTurn();
             }
+
             else
             {
                 playerService.CheckGameOver();
-
                 activeUnitIndex++;
                 TryStaringUnitTurn();
             }
@@ -82,7 +86,6 @@ namespace Command.Player
             units.Clear();
         }
 
-        // TODO:    What is this??
         public void ResetCurrentActivePlayer()
         {
             units[activeUnitIndex].ResetUnitIndicator();
