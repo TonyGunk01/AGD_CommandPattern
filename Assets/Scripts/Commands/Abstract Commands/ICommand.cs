@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Command.Input;
+using Command.Main;
+using Command.Player;
 using UnityEngine;
 
-public class ICommand : MonoBehaviour
+
+public abstract class ICommand : MonoBehaviour
 {
-    void Execute();
+    public abstract void Execute();
 }
 
 public abstract class UnitCommand : ICommand
@@ -17,7 +21,7 @@ public abstract class UnitCommand : ICommand
     protected UnitController actorUnit;
     protected UnitController targetUnit;
 
-    public abstract void Execute();
+    public abstract override void Execute();
 
     public abstract bool WillHitTarget();
 }
