@@ -10,7 +10,7 @@ namespace Command.Events
             private set; 
         }
 
-        public GameEventController<ActionType> OnActionSelected 
+        public GameEventController<CommandType> OnActionSelected 
         { 
             get; 
             private set; 
@@ -19,7 +19,7 @@ namespace Command.Events
         public EventService()
         {
             OnBattleSelected = new GameEventController<int>();
-            OnActionSelected = new GameEventController<ActionType>();
+            OnActionSelected = new GameEventController<CommandType>();
         }
     }
 }
