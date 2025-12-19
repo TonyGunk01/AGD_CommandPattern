@@ -8,7 +8,12 @@ namespace Command.Player
     {
         private PlayerService playerService;
 
-        public int PlayerID { get; private set; }
+        public int PlayerID 
+        { 
+            get; 
+            private set; 
+        }
+
         private List<UnitController> units;
         private int activeUnitIndex;
         public int ActiveUnitID => units[activeUnitIndex].UnitID;
@@ -25,9 +30,7 @@ namespace Command.Player
             units = new List<UnitController>();
 
             for(int i=0; i<unitScriptableObjects.Count; i++)
-            {
                 units.Add(new UnitController(this, unitScriptableObjects[i], unitPositions[i]));
-            }
         }
 
         public void StartPlayerTurn()
@@ -41,6 +44,7 @@ namespace Command.Player
         {
             if (IsCurrentUnitAlive())
                 units[activeUnitIndex].StartUnitTurn();
+
             else
                 OnUnitTurnEnded();
         }
@@ -49,32 +53,26 @@ namespace Command.Player
         {
             if(AllUnitsUsed())
             {
-                // TODO:    Need to check here if any of the players are dead. Not only the active one.
-
                 if (AllUnitsDead())
                     playerService.PlayerDied(this);
+
                 else 
                     EndPlayerTurn();
             }
+
             else
             {
                 playerService.CheckGameOver();
-
                 activeUnitIndex++;
                 TryStaringUnitTurn();
             }
         }
 
         private void ResetAllUnitStates() => units.ForEach(unit => unit.SetUsedState(UnitUsedState.NOT_USED));
-
         private bool IsCurrentUnitAlive() => units[activeUnitIndex].IsAlive();
-
         private bool AllUnitsUsed() => units.TrueForAll(unit => unit.UsedState == UnitUsedState.USED || !unit.IsAlive());
-
         public bool AllUnitsDead() => units.TrueForAll(unit => !unit.IsAlive());
-
         private void EndPlayerTurn() => playerService.OnPlayerTurnCompleted();
-
         public UnitController GetUnitByID(int unitId) => units.Find(unit => unit.UnitID == unitId);
 
         public void DestroyAllUnits()
@@ -90,6 +88,25 @@ namespace Command.Player
             units[activeUnitIndex].ResetUnitIndicator();
             activeUnitIndex--;
             units[activeUnitIndex].StartUnitTurn();
+        }
+
+        public void ResetCurrentActiveUnit()
+        {
+            units[activeUnitIndex].ResetUnitIndicator();
+
+            activeUnitIndex--;
+
+            while (activeUnitIndex >= 0)
+            {
+                if (!units[activeUnitIndex].IsAlive())
+                    activeUnitIndex--;
+
+                else
+                { 
+                    units[activeUnitIndex].StartUnitTurn();
+                    break;
+                }
+            }
         }
     }
 }
