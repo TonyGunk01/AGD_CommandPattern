@@ -1,6 +1,6 @@
 using Command.Main;
-using UnityEngine;
 using Command.Actions;
+using UnityEngine;
 
 namespace Command.Commands
 {
@@ -15,7 +15,26 @@ namespace Command.Commands
             willHitTarget = WillHitTarget();
         }
 
-        public override void Execute() => GameService.Instance.ActionService.GetActionByType((Actions.CommandType)CommandType.BerserkAttack).PerformAction(actorUnit, targetUnit, willHitTarget);
+        public override void Execute() => GameService.Instance.ActionService.GetActionByType(Command.Actions.CommandType.BerserkAttack).PerformAction(actorUnit, targetUnit, willHitTarget);
+
+        public override void Undo()
+        {
+            if (willHitTarget)
+            {
+                if (!targetUnit.IsAlive())
+                    targetUnit.Revive();
+
+                targetUnit.RestoreHealth(actorUnit.CurrentPower * 2);
+            }
+            else
+            {
+                if (!actorUnit.IsAlive())
+                    actorUnit.Revive();
+
+                actorUnit.RestoreHealth(actorUnit.CurrentPower * 2);
+            }
+            actorUnit.Owner.ResetCurrentActiveUnit();
+        }
 
         public override bool WillHitTarget() => Random.Range(0f, 1f) < hitChance;
     }
