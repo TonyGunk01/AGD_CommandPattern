@@ -33,14 +33,19 @@ namespace Command.UI
                 case 1:
                     if (targetType == TargetType.Enemy)
                         gameplayView.ShowPlayerOverlay(2, OverlayColorType.Enemy);
+
                     else
                         gameplayView.ShowPlayerOverlay(1, OverlayColorType.Friendly);
+
                     break;
+
                 case 2:
                     if (targetType == TargetType.Enemy)
                         gameplayView.ShowPlayerOverlay(1, OverlayColorType.Enemy);
+
                     else
                         gameplayView.ShowPlayerOverlay(2, OverlayColorType.Friendly);
+
                     break;
             }
         }
@@ -50,5 +55,7 @@ namespace Command.UI
         public void ShowMissedAction() => gameplayView.ShowMissedText();
 
         public void SetBattleBackgroundImage(Sprite bgSprite) => gameplayView.SetBattleBackgroundImage(bgSprite);
+
+        public void OnUndoButtonClicked() => GameService.Instance.CommandInvoker.Undo();
     }
 }
