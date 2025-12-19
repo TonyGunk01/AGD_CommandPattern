@@ -9,6 +9,7 @@ namespace Command.UI
     public class GameplayUIView : MonoBehaviour, IUIView
     {
         private GameplayUIController controller;
+        [SerializeField] private Button undoButton;
         [SerializeField] private TextMeshProUGUI turnText;
         [SerializeField] private TextMeshProUGUI missedText;
         [SerializeField] private Image Player1BackgroundOverlay;
@@ -21,6 +22,7 @@ namespace Command.UI
         public void SetController(GameplayUIController controllerToSet) 
         {
             controller = controllerToSet;
+            undoButton.onClick.AddListener(controller.OnUndoButtonClicked);
             missedText.canvasRenderer.SetAlpha(0);
         }
 
@@ -38,12 +40,10 @@ namespace Command.UI
                     Player1BackgroundOverlay.enabled = true;
                     SetOverlayColor(Player1BackgroundOverlay, overlayColorType);
                     break;
-
                 case 2:
                     Player2BackgroundOverlay.enabled = true;
                     SetOverlayColor(Player2BackgroundOverlay, overlayColorType);
                     break;
-
                 default:
                     break;
             }
@@ -69,15 +69,12 @@ namespace Command.UI
                 case OverlayColorType.Friendly:
                     overlayImage.color = FriendlyOverlayColor;
                     break;
-
                 case OverlayColorType.Enemy:
                     overlayImage.color = EnemyOverlayColor;
                     break;
-
                 case OverlayColorType.Neutral:
                     overlayImage.color = ActionSelectionOverlayColor;
                     break;
-
                 default:
                     break;
             }
@@ -96,14 +93,5 @@ namespace Command.UI
         Friendly,
         Enemy,
         Neutral
-    }
-
-    [SerializeField] Button undoButton;
-
-    public void SetController(GameplayUIController controllerToSet)
-    {
-        controller = controllerToSet;
-        undoButton.onClick.AddListener(controller.OnUndoButtonClicked);
-        missedText.canvasRenderer.SetAlpha(0);
     }
 }

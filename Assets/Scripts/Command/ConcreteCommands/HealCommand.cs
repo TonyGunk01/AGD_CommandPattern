@@ -1,6 +1,5 @@
-using Command.Actions;
 using Command.Main;
-using Command.Player;
+using Command.Actions;
 
 namespace Command.Commands
 {
@@ -14,9 +13,7 @@ namespace Command.Commands
             willHitTarget = WillHitTarget();
         }
 
-        public override void Execute() => GameService.Instance.ActionService.GetActionByType((Actions.CommandType)CommandType.Heal).PerformAction(actorUnit, targetUnit, willHitTarget);
-
-        public override bool WillHitTarget() => true;
+        public override void Execute() => GameService.Instance.ActionService.GetActionByType(Command.Actions.CommandType.Heal).PerformAction(actorUnit, targetUnit, willHitTarget);
 
         public override void Undo()
         {
@@ -27,10 +24,6 @@ namespace Command.Commands
             }
         }
 
-        public override void Revive()
-        {
-            SetAliveState(UnitAliveState.ALIVE);
-            unitView.PlayAnimation(UnitAnimations.IDLE);
-        }
+        public override bool WillHitTarget() => true;
     }
 }

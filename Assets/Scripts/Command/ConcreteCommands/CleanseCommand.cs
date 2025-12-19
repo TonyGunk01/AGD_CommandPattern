@@ -1,6 +1,5 @@
-using Command.Actions;
 using Command.Main;
-using Command.Player;
+using Command.Actions;
 using UnityEngine;
 
 namespace Command.Commands
@@ -9,6 +8,7 @@ namespace Command.Commands
     {
         private bool willHitTarget;
         private const float hitChance = 0.2f;
+        private int previousPower;
 
         public CleanseCommand(CommandData commandData)
         {
@@ -16,26 +16,20 @@ namespace Command.Commands
             willHitTarget = WillHitTarget();
         }
 
-        public override void Execute() => GameService.Instance.ActionService.GetActionByType((Actions.CommandType)CommandType.Cleanse).PerformAction(actorUnit, targetUnit, willHitTarget);
-
-        public override bool WillHitTarget() => Random.Range(0f, 1f) < hitChance;
+        public override void Execute()
+        {
+            previousPower = targetUnit.CurrentPower;
+            GameService.Instance.ActionService.GetActionByType(Command.Actions.CommandType.Cleanse).PerformAction(actorUnit, targetUnit, willHitTarget);
+        }
 
         public override void Undo()
         {
             if (willHitTarget)
-            {
-                if (!targetUnit.IsAlive())
-                    targetUnit.Revive();
+                targetUnit.CurrentPower = previousPower;
 
-                targetUnit.RestoreHealth(actorUnit.CurrentPower);
-                actorUnit.Owner.ResetCurrentActiveUnit();
-            }
+            actorUnit.Owner.ResetCurrentActiveUnit();
         }
 
-        public override void Revive()
-        {
-            SetAliveState(UnitAliveState.ALIVE);
-            unitView.PlayAnimation(UnitAnimations.IDLE);
-        }
+        public override bool WillHitTarget() => Random.Range(0f, 1f) < hitChance;
     }
 }

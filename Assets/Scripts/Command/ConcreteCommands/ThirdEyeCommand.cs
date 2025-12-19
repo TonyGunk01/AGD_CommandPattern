@@ -1,12 +1,12 @@
-using Command.Actions;
 using Command.Main;
-using Command.Player;
+using Command.Actions;
 
 namespace Command.Commands
 {
     public class ThirdEyeCommand : UnitCommand
     {
         private bool willHitTarget;
+        private int previousHealth;
 
         public ThirdEyeCommand(CommandData commandData)
         {
@@ -14,26 +14,23 @@ namespace Command.Commands
             willHitTarget = WillHitTarget();
         }
 
-        public override void Execute() => GameService.Instance.ActionService.GetActionByType((Actions.CommandType)CommandType.ThirdEye).PerformAction(actorUnit, targetUnit, willHitTarget);
-
-        public override bool WillHitTarget() => true;
+        public override void Execute()
+        {
+            previousHealth = targetUnit.CurrentHealth;
+            GameService.Instance.ActionService.GetActionByType(Command.Actions.CommandType.ThirdEye).PerformAction(actorUnit, targetUnit, willHitTarget);
+        }
 
         public override void Undo()
         {
-            if (willHitTarget)
-            {
-                if (!targetUnit.IsAlive())
-                    targetUnit.Revive();
+            if(!targetUnit.IsAlive())
+                targetUnit.Revive();
 
-                targetUnit.RestoreHealth(actorUnit.CurrentPower);
-                actorUnit.Owner.ResetCurrentActiveUnit();
-            }
+            int healthToRestore = (int)(previousHealth * 0.25f);
+            targetUnit.RestoreHealth(healthToRestore);
+            targetUnit.CurrentPower -= healthToRestore;
+            actorUnit.Owner.ResetCurrentActiveUnit();
         }
 
-        public override void Revive()
-        {
-            SetAliveState(UnitAliveState.ALIVE);
-            unitView.PlayAnimation(UnitAnimations.IDLE);
-        }
+        public override bool WillHitTarget() => true;
     } 
 }

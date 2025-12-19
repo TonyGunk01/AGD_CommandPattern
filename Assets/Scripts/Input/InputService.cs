@@ -1,7 +1,6 @@
 using Command.Main;
 using Command.Player;
 using Command.Commands;
-using Command.Actions;
 
 namespace Command.Input
 {
@@ -10,7 +9,7 @@ namespace Command.Input
         private MouseInputHandler mouseInputHandler;
 
         private InputState currentState;
-        private Commands.CommandType selectedCommandType;
+        private CommandType selectedCommandType;
         private TargetType targetType;
 
         public InputService()
@@ -30,11 +29,11 @@ namespace Command.Input
                 mouseInputHandler.HandleTargetSelection(targetType);
         }
 
-        public void OnActionSelected(Commands.CommandType selectedActionType)
+        public void OnActionSelected(CommandType selectedActionType)
         {
             this.selectedCommandType = selectedActionType;
             SetInputState(InputState.SELECTING_TARGET);
-            TargetType targetType = SetTargetType((Actions.CommandType)selectedActionType);
+            TargetType targetType = SetTargetType(selectedActionType);
             ShowTargetSelectionUI(targetType);
         }
 
@@ -44,7 +43,7 @@ namespace Command.Input
             GameService.Instance.UIService.ShowTargetOverlay(playerID, selectedTargetType);
         }
 
-        private TargetType SetTargetType(Actions.CommandType selectedCommandType) => targetType = GameService.Instance.ActionService.GetTargetTypeForAction(selectedCommandType);
+        private TargetType SetTargetType(CommandType selectedCommandType) => targetType = GameService.Instance.ActionService.GetTargetTypeForAction(selectedCommandType);
 
         public void OnTargetSelected(UnitController targetUnit)
         {
@@ -60,20 +59,27 @@ namespace Command.Input
 
             switch (selectedCommandType)
             {
-                case Commands.CommandType.Attack:
+                case CommandType.Attack:
                     return new AttackCommand(commandData);
-                case Commands.CommandType.Heal:
+
+                case CommandType.Heal:
                     return new HealCommand(commandData);
-                case Commands.CommandType.AttackStance:
+
+                case CommandType.AttackStance:
                     return new AttackStanceCommand(commandData);
-                case Commands.CommandType.Cleanse:
+
+                case CommandType.Cleanse:
                     return new CleanseCommand(commandData);
-                case Commands.CommandType.BerserkAttack:
+
+                case CommandType.BerserkAttack:
                     return new BerserkAttackCommand(commandData);
-                case Commands.CommandType.Meditate:
+
+                case CommandType.Meditate:
                     return new MeditateCommand(commandData);
-                case Commands.CommandType.ThirdEye:
+
+                case CommandType.ThirdEye:
                     return new ThirdEyeCommand(commandData);
+
                 default:
                     throw new System.Exception($"No Command found of type: {selectedCommandType}");
             }
