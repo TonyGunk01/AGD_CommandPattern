@@ -19,7 +19,7 @@ namespace Command.Actions
             this.targetUnit = targetUnit;
             this.isSuccessful = isSuccessful;
 
-            actorUnit.PlayBattleAnimation(Command.Commands.CommandType.AttackStance, CalculateMovePosition(targetUnit), OnActionAnimationCompleted);
+            actorUnit.PlayBattleAnimation(CommandType.AttackStance, CalculateMovePosition(targetUnit), OnActionAnimationCompleted);
         }
 
         public void OnActionAnimationCompleted()

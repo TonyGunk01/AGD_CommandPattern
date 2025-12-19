@@ -1,5 +1,4 @@
 using Command.Main;
-using Command.Actions;
 
 namespace Command.Commands
 {
@@ -13,7 +12,7 @@ namespace Command.Commands
             willHitTarget = WillHitTarget();
         }
 
-        public override void Execute() => GameService.Instance.ActionService.GetActionByType(Command.Actions.CommandType.Heal).PerformAction(actorUnit, targetUnit, willHitTarget);
+        public override void Execute() => GameService.Instance.ActionService.GetActionByType(CommandType.Heal).PerformAction(actorUnit, targetUnit, willHitTarget);
 
         public override void Undo()
         {
