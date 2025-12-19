@@ -1,5 +1,4 @@
 using Command.Main;
-using Command.Actions;
 
 namespace Command.Commands
 {
@@ -17,7 +16,7 @@ namespace Command.Commands
         public override void Execute()
         {
             previousHealth = targetUnit.CurrentHealth;
-            GameService.Instance.ActionService.GetActionByType(Command.Actions.CommandType.ThirdEye).PerformAction(actorUnit, targetUnit, willHitTarget);
+            GameService.Instance.ActionService.GetActionByType(CommandType.ThirdEye).PerformAction(actorUnit, targetUnit, willHitTarget);
         }
 
         public override void Undo()

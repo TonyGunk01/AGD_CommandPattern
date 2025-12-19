@@ -1,5 +1,4 @@
 using Command.Main;
-using Command.Actions;
 using UnityEngine;
 
 namespace Command.Commands
@@ -19,7 +18,7 @@ namespace Command.Commands
         public override void Execute()
         {
             previousPower = targetUnit.CurrentPower;
-            GameService.Instance.ActionService.GetActionByType(Command.Actions.CommandType.Cleanse).PerformAction(actorUnit, targetUnit, willHitTarget);
+            GameService.Instance.ActionService.GetActionByType(CommandType.Cleanse).PerformAction(actorUnit, targetUnit, willHitTarget);
         }
 
         public override void Undo()

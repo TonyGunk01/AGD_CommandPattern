@@ -1,7 +1,6 @@
 using Command.Input;
 using Command.Commands;
 using System.Collections.Generic;
-using System;
 
 namespace Command.Actions
 {
@@ -32,10 +31,5 @@ namespace Command.Actions
         }
 
         public TargetType GetTargetTypeForAction(CommandType actionType) => actions[actionType].TargetType;
-
-        internal TargetType GetTargetTypeForAction(Commands.CommandType selectedCommandType)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

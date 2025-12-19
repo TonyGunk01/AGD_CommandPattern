@@ -1,5 +1,4 @@
 using Command.Main;
-using Command.Actions;
 
 namespace Command.Commands
 {
@@ -17,7 +16,7 @@ namespace Command.Commands
         public override void Execute()
         {
             previousMaxHealth = targetUnit.CurrentMaxHealth;
-            GameService.Instance.ActionService.GetActionByType(Command.Actions.CommandType.Meditate).PerformAction(actorUnit, targetUnit, willHitTarget);
+            GameService.Instance.ActionService.GetActionByType(CommandType.Meditate).PerformAction(actorUnit, targetUnit, willHitTarget);
         }
 
         public override void Undo()

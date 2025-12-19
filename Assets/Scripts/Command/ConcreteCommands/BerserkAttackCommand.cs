@@ -1,5 +1,4 @@
 using Command.Main;
-using Command.Actions;
 using UnityEngine;
 
 namespace Command.Commands
@@ -15,7 +14,7 @@ namespace Command.Commands
             willHitTarget = WillHitTarget();
         }
 
-        public override void Execute() => GameService.Instance.ActionService.GetActionByType(Command.Actions.CommandType.BerserkAttack).PerformAction(actorUnit, targetUnit, willHitTarget);
+        public override void Execute() => GameService.Instance.ActionService.GetActionByType(CommandType.BerserkAttack).PerformAction(actorUnit, targetUnit, willHitTarget);
 
         public override void Undo()
         {
